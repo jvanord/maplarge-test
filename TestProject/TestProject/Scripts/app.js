@@ -20,14 +20,19 @@ function pageViewModel(model) {
 	// Methods
 	self.loadCurrentPath = function () {
 		self.path(location.hash.substr(1));
-		Api.getPath(self.path(), function (pathInfo, error) {
-			if (!!pathInfo)
-				self.children(pathInfo.children || []);	
-			setError(error);
-			self.loading(false);
-		});
+		Api.getPath(self.path(), getPathCallback);
 	};
 
+	// "Private" Functions
+	function getPathCallback(pathInfo, error) {
+		if (!!pathInfo) {
+			self.path(pathInfo.path);
+			self.children(pathInfo.children || []);
+		}
+		setError(error);
+		self.loading(false);
+		console.log({ path: self.path(), children: self.children() });
+	}
 	function setError(err) {
 		if (!err) return self.error(null);
 		var message =
@@ -68,6 +73,7 @@ var Api = (function ($) {
 		}
 		$.get(settings.baseUri + '/browse', { path: path || null })
 			.done(function (data) {
+				debugger;
 				if (typeof callback === 'function') callback.call(null, data);
 				Preloader.add(data);
 			})

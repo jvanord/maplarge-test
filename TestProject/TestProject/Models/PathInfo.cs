@@ -8,6 +8,6 @@ namespace TestProject.Models
 	public class PathInfo
 	{
 		public string Path { get; set; }
-		public List<string> Childred { get; internal set; } = new List<string>();
+		public List<string> Children { get; internal set; } = new List<string>();
 	}
 }
