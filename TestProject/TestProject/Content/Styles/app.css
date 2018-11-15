@@ -1,0 +1,23 @@
+﻿
+/*#region Animations*/
+
+.spin { 
+	-animation: spin .7s infinite linear; 
+	-ms-animation: spin .7s infinite linear; 
+	-webkit-animation: -webkit-spin .7s infinite linear; 
+	-moz-animation: -moz-spin .7s infinite linear; 
+}
+@keyframes spin {
+	from { transform: scale(1) rotate(0deg); }
+	to { transform: scale(1) rotate(360deg); }
+}
+@keyframes -webkit-spin {
+	from { -webkit-transform: scale(1) rotate(0deg); }
+	to { -webkit-transform: scale(1) rotate(360deg); }
+}
+@keyframes -moz-spin {
+	from { -moz-transform: scale(1) rotate(0deg); }
+	to { -moz-transform: scale(1) rotate(360deg); }
+}
+
+/*#endregion*/

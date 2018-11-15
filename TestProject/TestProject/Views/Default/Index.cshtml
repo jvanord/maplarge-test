@@ -2,12 +2,25 @@
 
 <html>
 <head>
-    <meta name="viewport" content="width=device-width" />
-    <title></title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>File System Browser</title>
+	<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+	<script src="~/Scripts/knockout-3.4.2.js"></script>
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+	<link href="~/Content/Styles/app.css" rel="stylesheet" />
 </head>
 <body>
-    <div>
-    Hello
-    </div>
+	<div class="container">
+		<div id="loading" data-bind="visible:loading">
+			<div class="bg-warning">
+				<span class="glyphicon glyphicon-refresh spin"></span>
+				Loading
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		ko.applyBindings(new pageViewModel());
+	</script>
 </body>
 </html>
