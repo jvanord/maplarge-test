@@ -20,22 +20,39 @@ function pageViewModel(model) {
 	// Methods
 	self.loadCurrentPath = function () {
 		self.loading(true);
-		self.path(location.hash.substr(1));
-		Api.getPath(self.path(), getPathCallback);
+		var path = location.hash.substr(1);
+		var preloaded = Preloader.get(path);
+		if (preloaded)
+			setPathAndChildren(preloaded);
+		else
+			Api.getPath(self.path(), getPathCallback);
 	};
 	self.onPathClick = function (path) {
 		self.loading(true);
-		self.path(path);
-		Api.getPath(self.path(), getPathCallback);
+		var preloaded = Preloader.get(path);
+		if (preloaded)
+			setPathAndChildren(preloaded);
+		else
+			Api.getPath(self.path(), getPathCallback);
 	}
 
 	// "Private" Functions
 	function getPathCallback(pathInfo, error) {
+		setPathAndChildren(pathInfo);
+		setError(error);
+	}
+	function setPathAndChildren(pathInfo) {
 		if (!!pathInfo) {
 			self.path(pathInfo.path);
 			self.children(pathInfo.children || []);
+			for (var i = 0; i < pathInfo.children.length; i++) {
+				Preloader.loadAsync(pathInfo.children[i]);
+			}
 		}
-		setError(error);
+		else {
+			self.path(null);
+			self.children([]);
+		}
 		self.loading(false);
 	}
 	function setError(err) {
@@ -56,11 +73,6 @@ var Api = (function ($) {
 		baseUri: null
 	};
 	var me = {};
-
-	// AJAX Callbacks
-	function onError(error){
-
-	}
 
 	// Initialize
 	me.init = function (options) {
@@ -100,6 +112,7 @@ var Preloader = (function () {
 		remove: path => {
 			if (!item || !item.path) return;
 			items = items.filter(p => p.path !== path);
-		}
+		},
+		loadAsync: path => Api.getPath(path, function (data, error) { if (data) Preloader.add(data); })
 	};
 })();
