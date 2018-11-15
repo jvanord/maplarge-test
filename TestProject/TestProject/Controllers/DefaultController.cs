@@ -8,10 +8,7 @@ namespace TestProject.Controllers
 {
 	public class DefaultController : Controller
 	{
-		// GET: Default
-		public ActionResult Test()
-		{
-			return Content("test");
-		}
+		// SPA Page
+		public ActionResult Index() => View();
 	}
 }
