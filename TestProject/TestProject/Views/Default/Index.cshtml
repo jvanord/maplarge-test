@@ -19,8 +19,15 @@
 			</div>
 		</div>
 	</div>
-	<script type="text/javascript">
-		ko.applyBindings(new pageViewModel());
+	<div class="content" data-bind="visible:!loading()">
+		Path: <span data-bind="text:path"></span>
+	</div>
+	<script src="~/Scripts/app.js"></script>
+	<script>
+		var vm = new pageViewModel();
+		ko.applyBindings(vm);
+		Api.init({ baseUri: '@Url.Content("~/api")' });
+		vm.loadCurrentPath();
 	</script>
 </body>
 </html>
