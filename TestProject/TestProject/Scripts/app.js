@@ -20,20 +20,22 @@ function pageViewModel(model) {
 	// Methods
 	self.loadCurrentPath = function () {
 		self.loading(true);
-		var path = location.hash.substr(1);
+		//debugger;
+		var path = decodeURIComponent(location.hash.substr(1));
 		var preloaded = Preloader.get(path);
 		if (preloaded)
 			setPathAndChildren(preloaded);
 		else
-			Api.getPath(self.path(), getPathCallback);
+			Api.getPath(path, getPathCallback);
 	};
 	self.onPathClick = function (path) {
 		self.loading(true);
+		history.pushState({ path }, '', '#' + path)
 		var preloaded = Preloader.get(path);
 		if (preloaded)
 			setPathAndChildren(preloaded);
 		else
-			Api.getPath(self.path(), getPathCallback);
+			Api.getPath(path, getPathCallback);
 	}
 
 	// "Private" Functions
@@ -99,6 +101,7 @@ var Api = (function ($) {
 	return me;
 })(window.jQuery);
 
+// Preloading for Performance
 var Preloader = (function () {
 	var items = [];
 	return {
