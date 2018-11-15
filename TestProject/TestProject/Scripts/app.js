@@ -19,9 +19,15 @@ function pageViewModel(model) {
 
 	// Methods
 	self.loadCurrentPath = function () {
+		self.loading(true);
 		self.path(location.hash.substr(1));
 		Api.getPath(self.path(), getPathCallback);
 	};
+	self.onPathClick = function (path) {
+		self.loading(true);
+		self.path(path);
+		Api.getPath(self.path(), getPathCallback);
+	}
 
 	// "Private" Functions
 	function getPathCallback(pathInfo, error) {
@@ -31,7 +37,6 @@ function pageViewModel(model) {
 		}
 		setError(error);
 		self.loading(false);
-		console.log({ path: self.path(), children: self.children() });
 	}
 	function setError(err) {
 		if (!err) return self.error(null);
@@ -88,7 +93,7 @@ var Preloader = (function () {
 		get: path => items.find(p => p.path === path),
 		add: item => {
 			if (!item || !item.path) return;
-			var match = items.find(p => p.path === path);
+			var match = items.find(p => p.path === item.path);
 			if (match) match = item;
 			else items.push(item);
 		},

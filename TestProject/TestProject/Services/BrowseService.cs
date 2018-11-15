@@ -33,7 +33,7 @@ namespace TestProject.Services
 			var dirPath = Path.Combine(_rootServerPath, path);
 			var directory = new DirectoryInfo(dirPath);
 			if (!directory.Exists) throw new DirectoryNotFoundException();
-			return directory.GetDirectories().Select(info => info.Name).ToList();
+			return directory.GetDirectories().Select(info => "\\" + Path.Combine(path, info.Name)).ToList();
 		}
 	}
 }
