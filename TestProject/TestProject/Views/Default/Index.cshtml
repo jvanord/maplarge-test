@@ -18,9 +18,10 @@
 				Loading
 			</div>
 		</div>
-	</div>
-	<div class="content" data-bind="visible:!loading()">
-		Path: <span data-bind="text:path"></span>
+		<div class="bg-danger" data-bind="text:error,visible:!!error()"></div>
+		<div class="content" data-bind="visible:!loading()">
+			Path: <span data-bind="text:path"></span>
+		</div>
 	</div>
 	<script src="~/Scripts/app.js"></script>
 	<script>
