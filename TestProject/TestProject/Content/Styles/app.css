@@ -1,9 +1,13 @@
 ﻿
+.content {
+	padding: 1em;
+	font-size: 14px;
+}
+
 /*#region Animations*/
 
 .spin { 
-	-animation: spin .7s infinite linear; 
-	-ms-animation: spin .7s infinite linear; 
+	animation: spin .7s infinite linear; 
 	-webkit-animation: -webkit-spin .7s infinite linear; 
 	-moz-animation: -moz-spin .7s infinite linear; 
 }
@@ -18,6 +22,25 @@
 @keyframes -moz-spin {
 	from { -moz-transform: scale(1) rotate(0deg); }
 	to { -moz-transform: scale(1) rotate(360deg); }
+}
+
+.riseup{
+	position: relative;
+	animation: riseup 1s; 
+	-webkit-animation: -webkit-riseup 1s; 
+	-moz-animation: -moz-riseup 1s; 
+}
+@keyframes riseup { 
+  from{ bottom:-100px; opacity:0 } 
+  to{ bottom:0; opacity:1 }
+}
+@-webkit-keyframes -webkit-riseup {
+  from { bottom:-100px; opacity:0 } 
+  to { bottom:0px; opacity:1 }
+}
+@-moz-keyframes -moz-riseup {
+  from { bottom:-100px; opacity:0 } 
+  to { bottom:0px; opacity:1 }
 }
 
 /*#endregion*/

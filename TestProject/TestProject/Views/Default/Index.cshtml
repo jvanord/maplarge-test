@@ -21,6 +21,9 @@
 		<div class="bg-danger" data-bind="text:error,visible:!!error()"></div>
 		<div class="content" data-bind="visible:!loading()">
 			Path: <span data-bind="text:path"></span>
+			<ul class="riseup" data-bind="foreach:children">
+				<li><a href="#" data-bind="text:$data,click:$root.onPathClick"></a></li>
+			</ul>
 		</div>
 	</div>
 	<script src="~/Scripts/app.js"></script>

@@ -73,7 +73,6 @@ var Api = (function ($) {
 		}
 		$.get(settings.baseUri + '/browse', { path: path || null })
 			.done(function (data) {
-				debugger;
 				if (typeof callback === 'function') callback.call(null, data);
 				Preloader.add(data);
 			})
