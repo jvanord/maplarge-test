@@ -9,5 +9,6 @@ namespace TestProject.Models
 	{
 		public string Path { get; set; }
 		public List<string> Children { get; internal set; } = new List<string>();
+		public List<string> Files { get; internal set; } = new List<string>();
 	}
 }

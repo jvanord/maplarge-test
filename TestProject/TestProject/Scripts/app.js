@@ -15,6 +15,7 @@ function pageViewModel(model) {
 	self.loading = ko.observable(!!model.loading);
 	self.path = ko.observable();
 	self.children = ko.observableArray();
+	self.files = ko.observableArray();
 	self.error = ko.observable();
 
 	// Methods
@@ -47,6 +48,7 @@ function pageViewModel(model) {
 		if (!!pathInfo) {
 			self.path(pathInfo.path);
 			self.children(pathInfo.children || []);
+			self.files(pathInfo.files || []);
 			for (var i = 0; i < pathInfo.children.length; i++) {
 				Preloader.loadAsync(pathInfo.children[i]);
 			}

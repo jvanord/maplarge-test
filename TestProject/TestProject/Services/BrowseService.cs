@@ -23,17 +23,21 @@ namespace TestProject.Services
 			}
 		}
 
-		public PathInfo GetPath(string path) => new PathInfo { Path = path, Children = GetChildren(path) };
-
-		public PathInfo GetRootPath() => GetPath("\\");
-
-		private List<string> GetChildren(string path)
+		public PathInfo GetPath(string path)
 		{
-			if (path.StartsWith("\\")) path = path.Substring(1);
-			var dirPath = Path.Combine(_rootServerPath, path);
+			var dirPath = path.StartsWith("\\")
+				? Path.Combine(_rootServerPath, path.Substring(1)) // Path.Combine doesn't like leading slashes in the second parameter
+				: Path.Combine(_rootServerPath, path);
 			var directory = new DirectoryInfo(dirPath);
 			if (!directory.Exists) throw new DirectoryNotFoundException();
-			return directory.GetDirectories().Select(info => "\\" + Path.Combine(path, info.Name)).ToList();
+			return new PathInfo
+			{
+				Path = path,
+				Children = directory.GetDirectories().Select(info => "\\" + Path.Combine(path, info.Name)).ToList(),
+				Files = directory.GetFiles().Select(info => info.Name + info.Extension).ToList()
+			};
 		}
+
+		public PathInfo GetRootPath() => GetPath("\\");
 	}
 }

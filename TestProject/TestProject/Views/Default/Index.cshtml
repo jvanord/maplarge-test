@@ -24,6 +24,9 @@
 			<ul class="x-riseup" data-bind="foreach:children">
 				<li><a href="#" data-bind="text:$data,click:$root.onPathClick"></a></li>
 			</ul>
+			<ul data-bind="foreach:files">
+				<li><span data-bind="text:$data"></span></li>
+			</ul>
 		</div>
 	</div>
 	<script src="~/Scripts/app.js"></script>
