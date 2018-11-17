@@ -117,7 +117,7 @@ var Api = (function ($) {
 var Preloader = (function () {
 	var items = [];
 	return {
-		get: path => items.find(p => p.path === path),
+		get: path => items.find(p => p.path === (path || '\\')),
 		add: item => {
 			if (!item || !item.path) return;
 			var match = items.find(p => p.path === item.path);
