@@ -28,7 +28,10 @@
 			</div>
 			Path: <span data-bind="text:path"></span>
 			<ul class="x-riseup" data-bind="foreach:children">
-				<li><a href="#" data-bind="text:$data,click:$root.onPathClick"></a></li>
+				<li>
+					<a href="#" data-bind="text:$data,click:$root.onPathClick"></a>
+					<span class="glyphicon glyphicon-trash" data-bind="click:function(){$root.onDeleteDirClick($data);}"></span>
+				</li>
 			</ul>
 			<ul data-bind="foreach:files">
 				<li>

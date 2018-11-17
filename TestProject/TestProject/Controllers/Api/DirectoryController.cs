@@ -13,7 +13,7 @@ namespace TestProject.Controllers.Api
 {
 	public class DirectoryController : ApiController
 	{
-		[Route("api/dir")]
+		[HttpGet, Route("api/dir")]
 		public async Task<PathInfo> Get(string path = null)
 		{
 			try
@@ -32,7 +32,7 @@ namespace TestProject.Controllers.Api
 			}
 		}
 
-		[Route("api/dir")]
+		[HttpPost, Route("api/dir")]
 		public async Task<PathInfo> Post([FromBody]NewPathInput input)
 		{
 			try
@@ -40,6 +40,30 @@ namespace TestProject.Controllers.Api
 				return await new DirectoryService().CreateChild(input.Path, input.Name);
 			}
 			catch(Exception ex)
+			{
+				throw new HttpResponseException(new HttpResponseMessage
+				{
+					StatusCode = HttpStatusCode.InternalServerError,
+					ReasonPhrase = ex.Message
+				});
+
+			}
+		}
+
+		[HttpDelete, Route("api/dir")]
+		public async Task Delete(string path = null)
+		{
+			try
+			{
+				if (string.IsNullOrWhiteSpace(path))
+					throw new HttpResponseException(new HttpResponseMessage
+					{
+						StatusCode = HttpStatusCode.InternalServerError,
+						ReasonPhrase = "No Path to Delete Specified"
+					});
+				await new DirectoryService().Delete(path);
+			}
+			catch (Exception ex)
 			{
 				throw new HttpResponseException(new HttpResponseMessage
 				{

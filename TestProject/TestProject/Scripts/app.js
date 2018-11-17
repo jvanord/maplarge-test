@@ -52,18 +52,34 @@ function pageViewModel(model) {
 		if (!name) return;
 		self.loading(true);
 		self.error(null);
-		debugger;
 		Api.newPath(self.path(), name, function (data, error) {
 			if (error) setError(error);
 			Preloader.remove(self.path()); // clear cache
 			self.loadCurrentPath(); // refresh
 		});
 	};
+	self.onDeleteDirClick = function (path) {
+		if (!path) return;
+		self.loading(true);
+		if (!confirm('This action will delete this folder AND ALL OF ITS CONTENTS. Are you absolutely sure?'))
+			return self.loading(false);
+		self.error(null);
+		Api.deletePath(path, function (data, error) {
+			if (error)
+				setError(error);
+			else {
+				Preloader.remove(self.path()); // clear cache
+				self.loadCurrentPath(); // refresh
+			}
+		});
+	};
 
 	// "Private" Functions
 	function getPathCallback(pathInfo, error) {
-		setPathAndChildren(pathInfo);
-		if (error) setError(error);
+		if (error)
+			setError(error);
+		else
+			setPathAndChildren(pathInfo);
 	}
 	function setPathAndChildren(pathInfo) {
 		if (!!pathInfo) {
@@ -125,6 +141,16 @@ var Api = (function ($) {
 	// Create Directory
 	me.newPath = function (path, name, callback) {
 		$.post(settings.baseUri + settings.directoryUri, { path: path, name: name })
+			.done(function (data) { if (typeof callback === 'function') callback.call(null, data); })
+			.fail(function (error) { if (typeof callback === 'function') callback.call(null, null, error); });
+	};
+
+	// Delete Directory
+	me.deletePath = function (path, callback) {
+		$.ajax({
+			url: settings.baseUri + settings.directoryUri + '?' + $.param({ path: path }),
+			type: 'DELETE'
+		})
 			.done(function (data) { if (typeof callback === 'function') callback.call(null, data); })
 			.fail(function (error) { if (typeof callback === 'function') callback.call(null, null, error); });
 	};

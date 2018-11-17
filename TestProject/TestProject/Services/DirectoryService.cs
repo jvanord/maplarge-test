@@ -50,5 +50,17 @@ namespace TestProject.Services
 				};
 			});
 		}
+
+		public async Task Delete(string path)
+		{
+			if (string.IsNullOrEmpty(path)) path = "\\";
+			else if (!path.StartsWith("\\")) path = "\\" + path;
+			var directory = new DirectoryInfo(Path.Combine(RootServerPath, path.Substring(1))); // Path.Combine doesn't like leading slashes in the second parameter
+			await Task.Run(() =>
+			{
+				if (!directory.Exists) throw new DirectoryNotFoundException();
+				directory.Delete(true);
+			});
+		}
 	}
 }
