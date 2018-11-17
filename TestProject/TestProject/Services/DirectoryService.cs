@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Hosting;
 using TestProject.Models;
@@ -23,20 +24,23 @@ namespace TestProject.Services
 			}
 		}
 
-		public PathInfo GetPath(string path)
+		public async Task<PathInfo> GetPath(string path)
 		{
 			if (string.IsNullOrEmpty(path)) path = "\\";
 			else if (!path.StartsWith("\\")) path = "\\" + path;
 			var directory = new DirectoryInfo(Path.Combine(_rootServerPath, path.Substring(1))); // Path.Combine doesn't like leading slashes in the second parameter
-			if (!directory.Exists) throw new DirectoryNotFoundException();
-			return new PathInfo
+			return await Task.Run(() =>
 			{
-				Path = path,
-				Children = directory.GetDirectories().Select(info => Path.Combine(path, info.Name)).ToList(),
-				Files = directory.GetFiles().Select(info => info.Name + info.Extension).ToList()
-			};
+				if (!directory.Exists) throw new DirectoryNotFoundException();
+				return new PathInfo
+				{
+					Path = path,
+					Children = directory.GetDirectories().Select(info => Path.Combine(path, info.Name)).ToList(),
+					Files = directory.GetFiles().Select(info => info.Name + info.Extension).ToList()
+				};
+			});
 		}
 
-		public PathInfo GetRootPath() => GetPath("\\");
+		public async Task<PathInfo> GetRootPath() => await GetPath("\\");
 	}
 }

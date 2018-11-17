@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 using TestProject.Models;
 using TestProject.Services;
@@ -13,13 +14,13 @@ namespace TestProject.Controllers.Api
 	public class DirectoryController : ApiController
 	{
 		[Route("api/dir")]
-		public PathInfo Get(string path = null)
+		public async Task<PathInfo> Get(string path = null)
 		{
 			try
 			{
 				return string.IsNullOrWhiteSpace(path)
-					? new DirectoryService().GetRootPath()
-					: new DirectoryService().GetPath(path);
+					? await new DirectoryService().GetRootPath()
+					: await new DirectoryService().GetPath(path);
 			}
 			catch(DirectoryNotFoundException)
 			{
