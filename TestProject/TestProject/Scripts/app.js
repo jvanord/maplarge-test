@@ -73,6 +73,22 @@ function pageViewModel(model) {
 			}
 		});
 	};
+	self.onDeleteFileClick = function (path, file) {
+		if (!path || !file) return console.error('Can\'t resolve file path.', { path, file });
+		var fullPath = [path, file].join('\\').replace('\\\\', '\\');
+		self.loading(true);
+		if (!confirm('This action will delete this file irretrievably. Are you absolutely sure?'))
+			return self.loading(false);
+		self.error(null);
+		Api.deleteFile(fullPath, function (data, error) {
+			if (error)
+				setError(error);
+			else {
+				Preloader.remove(self.path()); // clear cache
+				self.loadCurrentPath(); // refresh
+			}
+		});
+	};
 
 	// "Private" Functions
 	function getPathCallback(pathInfo, error) {
@@ -112,7 +128,8 @@ function pageViewModel(model) {
 var Api = (function ($) {
 	var settings = {
 		baseUri: null,
-		directoryUri: '/dir'
+		directoryUri: '/dir',
+		fileUri: '/file'
 	};
 	var me = {};
 
@@ -149,6 +166,16 @@ var Api = (function ($) {
 	me.deletePath = function (path, callback) {
 		$.ajax({
 			url: settings.baseUri + settings.directoryUri + '?' + $.param({ path: path }),
+			type: 'DELETE'
+		})
+			.done(function (data) { if (typeof callback === 'function') callback.call(null, data); })
+			.fail(function (error) { if (typeof callback === 'function') callback.call(null, null, error); });
+	};
+
+	// Delete File
+	me.deleteFile = function (fullPath, callback) {
+		$.ajax({
+			url: settings.baseUri + settings.fileUri + '?' + $.param({ path: fullPath }),
 			type: 'DELETE'
 		})
 			.done(function (data) { if (typeof callback === 'function') callback.call(null, data); })

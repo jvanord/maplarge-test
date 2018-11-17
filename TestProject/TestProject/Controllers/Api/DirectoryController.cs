@@ -63,6 +63,15 @@ namespace TestProject.Controllers.Api
 					});
 				await new DirectoryService().Delete(path);
 			}
+
+			catch (DirectoryNotFoundException ex)
+			{
+				throw new HttpResponseException(new HttpResponseMessage
+				{
+					StatusCode = HttpStatusCode.NotFound,
+					ReasonPhrase = "Specified Directory Not Found"
+				});
+			}
 			catch (Exception ex)
 			{
 				throw new HttpResponseException(new HttpResponseMessage

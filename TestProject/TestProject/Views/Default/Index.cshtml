@@ -37,6 +37,7 @@
 				<li>
 					<span data-bind="text:$data"></span>
 					<span class="glyphicon glyphicon-download" data-bind="click:function(){$root.onDownloadClick($parent.path(),$data);}"></span>
+					<span class="glyphicon glyphicon-trash" data-bind="click:function(){$root.onDeleteFileClick($parent.path(),$data);}"></span>
 				</li>
 			</ul>
 		</div>

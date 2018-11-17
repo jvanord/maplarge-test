@@ -24,5 +24,18 @@ namespace TestProject.Services
 			});
 			
 		}
+
+		/// <summary>Deletes a given path and all its contents.</summary>
+		public async Task Delete(string path)
+		{
+			if (string.IsNullOrEmpty(path)) path = "\\";
+			else if (!path.StartsWith("\\")) path = "\\" + path;
+			var file = new FileInfo(Path.Combine(RootServerPath, path.Substring(1))); // Path.Combine doesn't like leading slashes in the second parameter
+			await Task.Run(() =>
+			{
+				if (!file.Exists) throw new FileNotFoundException();
+				file.Delete();
+			});
+		}
 	}
 }
