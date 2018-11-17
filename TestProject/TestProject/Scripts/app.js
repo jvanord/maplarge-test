@@ -1,8 +1,11 @@
 ﻿;
 /*
 	Core App Features
+
 	Note: This prototype is using HTML5 and ECMA 6 and for clarity no shims or 
 	feature detection is being used for backward compatability.
+	
+	Normally this would be organized in more than one file, but this is a prototype.
 */
 
 // Page View Model
@@ -38,7 +41,12 @@ function pageViewModel(model) {
 			setPathAndChildren(preloaded);
 		else
 			Api.getPath(path, getPathCallback);
-	}
+	};
+	self.onDownloadClick = function (path, file) {
+		if (!path || !file) return console.error('Can\'t resolve file path.', {path,file});
+		var fullPath = [path, file].join('\\').replace('\\\\', '\\');
+		window.open('/default/download?path=' + encodeURIComponent(fullPath));
+	};
 
 	// "Private" Functions
 	function getPathCallback(pathInfo, error) {
