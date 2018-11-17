@@ -1,4 +1,5 @@
-﻿; /*
+﻿;
+/*
 	Core App Features
 	Note: This prototype is using HTML5 and ECMA 6 and for clarity no shims or 
 	feature detection is being used for backward compatability.
@@ -74,7 +75,8 @@ function pageViewModel(model) {
 // API Controller
 var Api = (function ($) {
 	var settings = {
-		baseUri: null
+		baseUri: null,
+		directoryUri: '/dir'
 	};
 	var me = {};
 
@@ -85,14 +87,14 @@ var Api = (function ($) {
 		settings = $.extend(settings, options);
 	}
 
-	// Get
+	// Get Directory
 	me.getPath = function (path, callback) {
 		var preloaded = Preloader.get(path);
 		if (!!preloaded) {
 			if (typeof callback === 'function') callback.call(preloaded);
 			return;
 		}
-		$.get(settings.baseUri + '/browse', { path: path || null })
+		$.get(settings.baseUri + settings.directoryUri, { path: path || null })
 			.done(function (data) {
 				if (typeof callback === 'function') callback.call(null, data);
 				Preloader.add(data);

@@ -10,16 +10,16 @@ using TestProject.Services;
 
 namespace TestProject.Controllers.Api
 {
-	public class BrowseController : ApiController
+	public class DirectoryController : ApiController
 	{
-		[Route("api/browse")]
+		[Route("api/dir")]
 		public PathInfo Get(string path = null)
 		{
 			try
 			{
 				return string.IsNullOrWhiteSpace(path)
-					? new BrowseService().GetRootPath()
-					: new BrowseService().GetPath(path);
+					? new DirectoryService().GetRootPath()
+					: new DirectoryService().GetPath(path);
 			}
 			catch(DirectoryNotFoundException)
 			{

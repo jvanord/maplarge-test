@@ -9,11 +9,11 @@ using TestProject.Models;
 
 namespace TestProject.Services
 {
-	public class BrowseService
+	public class DirectoryService
 	{
 		private static string _rootServerPath;
 
-		public BrowseService()
+		public DirectoryService()
 		{
 			if (string.IsNullOrEmpty(_rootServerPath))
 			{
@@ -25,15 +25,14 @@ namespace TestProject.Services
 
 		public PathInfo GetPath(string path)
 		{
-			var dirPath = path.StartsWith("\\")
-				? Path.Combine(_rootServerPath, path.Substring(1)) // Path.Combine doesn't like leading slashes in the second parameter
-				: Path.Combine(_rootServerPath, path);
-			var directory = new DirectoryInfo(dirPath);
+			if (string.IsNullOrEmpty(path)) path = "\\";
+			else if (!path.StartsWith("\\")) path = "\\" + path;
+			var directory = new DirectoryInfo(Path.Combine(_rootServerPath, path.Substring(1))); // Path.Combine doesn't like leading slashes in the second parameter
 			if (!directory.Exists) throw new DirectoryNotFoundException();
 			return new PathInfo
 			{
 				Path = path,
-				Children = directory.GetDirectories().Select(info => "\\" + Path.Combine(path, info.Name)).ToList(),
+				Children = directory.GetDirectories().Select(info => Path.Combine(path, info.Name)).ToList(),
 				Files = directory.GetFiles().Select(info => info.Name + info.Extension).ToList()
 			};
 		}
