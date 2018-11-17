@@ -31,5 +31,23 @@ namespace TestProject.Controllers.Api
 				});
 			}
 		}
+
+		[Route("api/dir")]
+		public async Task<PathInfo> Post([FromBody]NewPathInput input)
+		{
+			try
+			{
+				return await new DirectoryService().CreateChild(input.Path, input.Name);
+			}
+			catch(Exception ex)
+			{
+				throw new HttpResponseException(new HttpResponseMessage
+				{
+					StatusCode = HttpStatusCode.InternalServerError,
+					ReasonPhrase = ex.Message
+				});
+
+			}
+		}
 	}
 }

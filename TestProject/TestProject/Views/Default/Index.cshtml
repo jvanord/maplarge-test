@@ -20,6 +20,12 @@
 		</div>
 		<div class="bg-danger" data-bind="text:error,visible:!!error()"></div>
 		<div class="content" data-bind="visible:!loading()">
+			<div class="pull-right">
+				<p>
+					<span class="glyphicon glyphicon-plus"data-bind="click:onNewDirClick"></span> 
+					New Folder
+				</p>
+			</div>
 			Path: <span data-bind="text:path"></span>
 			<ul class="x-riseup" data-bind="foreach:children">
 				<li><a href="#" data-bind="text:$data,click:$root.onPathClick"></a></li>

@@ -32,5 +32,23 @@ namespace TestProject.Services
 		}
 
 		public async Task<PathInfo> GetRootPath() => await GetPath("\\");
+
+		public async Task<PathInfo> CreateChild(string path, string name)
+		{
+			if (string.IsNullOrEmpty(name)) throw new Exception("New Folder Name not Specified");
+			if (string.IsNullOrEmpty(path)) path = "\\";
+			else if (!path.StartsWith("\\")) path = "\\" + path;
+			var parent = new DirectoryInfo(Path.Combine(RootServerPath, path.Substring(1)));
+			return await Task.Run(() => {
+				if (!parent.Exists) throw new DirectoryNotFoundException();
+				var newDir = Directory.CreateDirectory(Path.Combine(RootServerPath, path.Substring(1), name));
+				return new PathInfo
+				{
+					Path = path + name,
+					Children = new List<string>(),
+					Files = new List<string>()
+				};
+			});
+		}
 	}
 }
