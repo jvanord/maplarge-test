@@ -8,10 +8,12 @@ using TestProject.Models;
 
 namespace TestProject.Services
 {
+	/// <summary>Handles operation on files.</summary>
 	public class FileService : ServiceBase
 	{
 		public FileService() : base() { }
 
+		/// <summary></summary>
 		public async Task<FileDetail> GetFile(string path)
 		{
 			if (!path.StartsWith("\\")) path = "\\" + path;

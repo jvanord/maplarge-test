@@ -10,10 +10,12 @@ using TestProject.Models;
 
 namespace TestProject.Services
 {
+	/// <summary>Manages Operations on Folders/Directories</summary>
 	public class DirectoryService : ServiceBase
 	{
 		public DirectoryService() : base() { }
 
+		/// <summary>Gets information and contents of a given path.</summary>
 		public async Task<PathInfo> GetPath(string path)
 		{
 			if (string.IsNullOrEmpty(path)) path = "\\";
@@ -31,8 +33,10 @@ namespace TestProject.Services
 			});
 		}
 
+		/// <summary>Gets information and contents of the application's root browse path.</summary>
 		public async Task<PathInfo> GetRootPath() => await GetPath("\\");
 
+		/// <summary>Creates a child directory for a give path.</summary>
 		public async Task<PathInfo> CreateChild(string path, string name)
 		{
 			if (string.IsNullOrEmpty(name)) throw new Exception("New Folder Name not Specified");
@@ -51,6 +55,7 @@ namespace TestProject.Services
 			});
 		}
 
+		/// <summary>Deletes a given path and all its contents.</summary>
 		public async Task Delete(string path)
 		{
 			if (string.IsNullOrEmpty(path)) path = "\\";

@@ -5,6 +5,7 @@ using System.Web;
 
 namespace TestProject.Models
 {
+	/// <summary>Information on the path and contents of a directory.</summary>
 	public class PathInfo
 	{
 		public string Path { get; set; }
