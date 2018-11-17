@@ -116,8 +116,10 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\FileDetail.cs" />
+    <Compile Include="Models\NewFileInfo.cs" />
     <Compile Include="Models\NewPathInput.cs" />
     <Compile Include="Models\PathInfo.cs" />
+    <Compile Include="Models\UploadInput.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\DirectoryService.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />

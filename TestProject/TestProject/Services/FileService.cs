@@ -17,7 +17,7 @@ namespace TestProject.Services
 		public async Task<FileDetail> GetFile(string path)
 		{
 			if (!path.StartsWith("\\")) path = "\\" + path;
-			var fileInfo = new FileInfo(Path.Combine(RootServerPath, path.Substring(1))); // Path.Combine doesn't like leading slashes in the second parameter
+			var fileInfo = new FileInfo(Path.Combine(RootServerPath, path.Substring(1))); 
 			return await Task.Run(() => {
 				if (!fileInfo.Exists) throw new FileNotFoundException();
 				return new FileDetail(fileInfo);
@@ -25,12 +25,32 @@ namespace TestProject.Services
 			
 		}
 
+		public Task<NewFileInfo> SaveFile(string path, HttpPostedFile file)
+		{
+			if (string.IsNullOrEmpty(path)) path = "\\";
+			else if (!path.StartsWith("\\")) path = "\\" + path;
+			var info = new NewFileInfo { Path = path, Name = file.FileName };
+			return Task.Run(() => 
+			{
+				try
+				{
+					file.SaveAs(Path.Combine(RootServerPath, path.Substring(1), file.FileName));
+					info.Success = true;
+				}
+				catch(Exception ex)
+				{
+					// What should we do with asynchronous files?
+				}
+				return info;
+			});
+		}
+
 		/// <summary>Deletes a given path and all its contents.</summary>
 		public async Task Delete(string path)
 		{
 			if (string.IsNullOrEmpty(path)) path = "\\";
 			else if (!path.StartsWith("\\")) path = "\\" + path;
-			var file = new FileInfo(Path.Combine(RootServerPath, path.Substring(1))); // Path.Combine doesn't like leading slashes in the second parameter
+			var file = new FileInfo(Path.Combine(RootServerPath, path.Substring(1)));
 			await Task.Run(() =>
 			{
 				if (!file.Exists) throw new FileNotFoundException();

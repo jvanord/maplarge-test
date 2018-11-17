@@ -7,12 +7,28 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using TestProject.Models;
 using TestProject.Services;
 
 namespace TestProject.Controllers.Api
 {
 	public class FileController : ApiController
 	{
+
+		[HttpPost, Route("api/file")]
+		public async Task<NewFileInfo> Post(string path = null)
+		{
+			var file = HttpContext.Current.Request.Files?[0];
+			if (path == null) path = HttpContext.Current.Request["path"];
+			if (file == null)
+				throw new HttpResponseException(new HttpResponseMessage
+				{
+					StatusCode = HttpStatusCode.InternalServerError,
+					ReasonPhrase = "No File Uploaded"
+				});
+			return await new FileService().SaveFile(path, file);
+		}
+
 		[HttpDelete, Route("api/file")]
 		public async Task Delete(string path = null)
 		{
@@ -26,7 +42,7 @@ namespace TestProject.Controllers.Api
 					});
 				await new FileService().Delete(path);
 			}
-			catch (FileNotFoundException ex)
+			catch (FileNotFoundException)
 			{
 				throw new HttpResponseException(new HttpResponseMessage
 				{

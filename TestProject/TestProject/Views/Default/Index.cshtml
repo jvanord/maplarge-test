@@ -25,6 +25,11 @@
 					<span class="glyphicon glyphicon-plus"data-bind="click:onNewDirClick"></span> 
 					New Folder
 				</p>
+				<p>
+					Upload File(s)
+					<input type="file" id="fileUpload"/>
+					<span class="glyphicon glyphicon-upload" data-bind="click:onUploadClick"></span> 
+				</p>
 			</div>
 			Path: <span data-bind="text:path"></span>
 			<ul class="x-riseup" data-bind="foreach:children">

@@ -73,6 +73,17 @@ function pageViewModel(model) {
 			}
 		});
 	};
+	self.onUploadClick = function () {
+		var files = $("#fileUpload").get(0).files;
+		if (!files.length) return setError('No Files Selected');
+		self.loading(true);
+		self.error(null);
+		Api.upload(self.path(), files[0], function (data, error) {
+			if (error) setError(error);
+			Preloader.remove(self.path()); // clear cache
+			self.loadCurrentPath(); // refresh
+		});
+	};
 	self.onDeleteFileClick = function (path, file) {
 		if (!path || !file) return console.error('Can\'t resolve file path.', { path, file });
 		var fullPath = [path, file].join('\\').replace('\\\\', '\\');
@@ -181,6 +192,23 @@ var Api = (function ($) {
 			.done(function (data) { if (typeof callback === 'function') callback.call(null, data); })
 			.fail(function (error) { if (typeof callback === 'function') callback.call(null, null, error); });
 	};
+
+	me.upload = function (path, file, callback) {
+		debugger;
+		var formData = new FormData();
+		formData.append('file', file);
+		formData.append('path', path);
+		$.ajax({
+			url: settings.baseUri + settings.fileUri,
+			type: 'POST',
+			data: formData,
+			cache: false,
+			contentType: false,
+			processData: false
+		})
+			.done(function (data) { if (typeof callback === 'function') callback.call(null, data); })
+			.fail(function (error) { if (typeof callback === 'function') callback.call(null, null, error); });
+	}
 
 	return me;
 })(window.jQuery);
