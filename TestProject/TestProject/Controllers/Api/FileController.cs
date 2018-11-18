@@ -18,15 +18,14 @@ namespace TestProject.Controllers.Api
 		[HttpPost, Route("api/file")]
 		public async Task<NewFileInfo> Post(string path = null)
 		{
-			var file = HttpContext.Current.Request.Files?[0];
-			if (path == null) path = HttpContext.Current.Request["path"];
-			if (file == null)
+			if(HttpContext.Current.Request.Files == null || HttpContext.Current.Request.Files.Count < 1)
 				throw new HttpResponseException(new HttpResponseMessage
 				{
 					StatusCode = HttpStatusCode.InternalServerError,
 					ReasonPhrase = "No File Uploaded"
 				});
-			return await new FileService().SaveFile(path, file);
+			if (path == null) path = HttpContext.Current.Request["path"];
+			return await new FileService().SaveFile(path, HttpContext.Current.Request.Files[0]);
 		}
 
 		[HttpDelete, Route("api/file")]

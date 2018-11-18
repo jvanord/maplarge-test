@@ -26,12 +26,16 @@
 					New Folder
 				</p>
 				<p>
-					Upload File(s)
+					Upload File:
 					<input type="file" id="fileUpload" style="display:inline-block"/>
 					<span class="glyphicon glyphicon-upload" data-bind="click:onUploadClick"></span> 
 				</p>
 			</div>
 			<h3>Path: <span data-bind="text:path"></span></h3>
+			<p>
+				<span data-bind="text:children().length"></span> Folders,
+				<span data-bind="text:files().length"></span> Files
+			</p>
 			<p style="font-size:smaller">You can use the back and forward buttons on your browser or mouse to navigate.</p>
 			<ul class="x-riseup" data-bind="foreach:children">
 				<li>
