@@ -16,7 +16,7 @@ namespace TestProject.Controllers.Api
 	{
 
 		[HttpPost, Route("api/file")]
-		public async Task<NewFileInfo> Post(string path = null)
+		public async Task<FileData> Post(string path = null)
 		{
 			if(HttpContext.Current.Request.Files == null || HttpContext.Current.Request.Files.Count < 1)
 				throw new HttpResponseException(new HttpResponseMessage

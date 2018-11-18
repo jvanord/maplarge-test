@@ -76,7 +76,7 @@ function pageViewModel(model) {
 	self.onUploadClick = function () {
 		var files = $("#fileUpload").get(0).files;
 		if (!files.length) return setError('No Files Selected');
-		if (file.size > 4194304) return setError('Selected File Too Large'); // 4MB is the server default
+		if (files[0].size > 4194304) return setError('Selected File Too Large'); // 4MB is the server default
 		self.loading(true);
 		self.error(null);
 		Api.upload(self.path(), files[0], function (data, error) {
@@ -194,6 +194,7 @@ var Api = (function ($) {
 			.fail(function (error) { if (typeof callback === 'function') callback.call(null, null, error); });
 	};
 
+	// Upload File
 	me.upload = function (path, file, callback) {
 		debugger;
 		var formData = new FormData();

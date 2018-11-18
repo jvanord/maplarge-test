@@ -116,7 +116,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\FileDetail.cs" />
-    <Compile Include="Models\NewFileInfo.cs" />
+    <Compile Include="Models\FileData.cs" />
     <Compile Include="Models\NewPathInput.cs" />
     <Compile Include="Models\PathInfo.cs" />
     <Compile Include="Models\UploadInput.cs" />

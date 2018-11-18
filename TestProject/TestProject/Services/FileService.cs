@@ -25,17 +25,16 @@ namespace TestProject.Services
 			
 		}
 
-		public Task<NewFileInfo> SaveFile(string path, HttpPostedFile file)
+		public Task<FileData> SaveFile(string path, HttpPostedFile file)
 		{
 			if (string.IsNullOrEmpty(path)) path = "\\";
 			else if (!path.StartsWith("\\")) path = "\\" + path;
-			var info = new NewFileInfo { Path = path, Name = file.FileName };
+			var info = new FileData { Path = path, Name = file.FileName, Size = file.ContentLength };
 			return Task.Run(() => 
 			{
 				try
 				{
 					file.SaveAs(Path.Combine(RootServerPath, path.Substring(1), file.FileName));
-					info.Success = true;
 				}
 				catch(Exception ex)
 				{

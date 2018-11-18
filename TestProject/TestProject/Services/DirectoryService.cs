@@ -28,7 +28,12 @@ namespace TestProject.Services
 				{
 					Path = path,
 					Children = directory.GetDirectories().Select(info => Path.Combine(path, info.Name)).ToList(),
-					Files = directory.GetFiles().Select(info => info.Name).ToList()
+					Files = directory.GetFiles().Select(info => new FileData
+					{
+						Name = info.Name,
+						Path = path,
+						Size = (int)info.Length
+					}).ToList()
 				};
 			});
 		}
@@ -43,14 +48,15 @@ namespace TestProject.Services
 			if (string.IsNullOrEmpty(path)) path = "\\";
 			else if (!path.StartsWith("\\")) path = "\\" + path;
 			var parent = new DirectoryInfo(Path.Combine(RootServerPath, path.Substring(1)));
-			return await Task.Run(() => {
+			return await Task.Run(() =>
+			{
 				if (!parent.Exists) throw new DirectoryNotFoundException();
 				var newDir = Directory.CreateDirectory(Path.Combine(RootServerPath, path.Substring(1), name));
 				return new PathInfo
 				{
 					Path = path + name,
 					Children = new List<string>(),
-					Files = new List<string>()
+					Files = new List<FileData>()
 				};
 			});
 		}
