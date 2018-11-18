@@ -27,11 +27,12 @@
 				</p>
 				<p>
 					Upload File(s)
-					<input type="file" id="fileUpload"/>
+					<input type="file" id="fileUpload" style="display:inline-block"/>
 					<span class="glyphicon glyphicon-upload" data-bind="click:onUploadClick"></span> 
 				</p>
 			</div>
-			Path: <span data-bind="text:path"></span>
+			<h3>Path: <span data-bind="text:path"></span></h3>
+			<p style="font-size:smaller">You can use the back and forward buttons on your browser or mouse to navigate.</p>
 			<ul class="x-riseup" data-bind="foreach:children">
 				<li>
 					<a href="#" data-bind="text:$data,click:$root.onPathClick"></a>
