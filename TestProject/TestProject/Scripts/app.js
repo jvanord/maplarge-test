@@ -196,7 +196,6 @@ var Api = (function ($) {
 
 	// Upload File
 	me.upload = function (path, file, callback) {
-		debugger;
 		var formData = new FormData();
 		formData.append('file', file);
 		formData.append('path', path);
